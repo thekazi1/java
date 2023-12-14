@@ -1,0 +1,1407 @@
+1	To Perform Arithmetic Operation using Servlet.(Calculator)	28-06-2023	3	
+2	To Validate user by Name and password.	28-06-2023	5	
+3	To find number of times user visited the page(Cookies)	05-07-2023	7	
+4	Display implicit objects by jsp	05-07-2023	9	
+5	To update sql  table by JSP page.	12-07-2023	11	
+6	Currency Converter Program	12-07-2023	14	
+7	Validating user by JSP	19-07-2023	17	
+8	Working with JSTL	19-07-2023	20	
+9	Register user in database	26-07-2023	22	
+10	Use of Request Dispatcher to welcome user	26-07-2023	27	
+11	To view data from database room book	02-08-2023	30	
+12	Create a registration and login JSP application to register an authenticate the user	02-08-2023	33	
+13	File upload	09-08-2023	36	
+14	File Download	09-08-2023	39	
+15	To Create quiz	23-08-2023	41	
+16	Expression language by using JSP	23-08-2023	46	
+17	USE JDBC FOR DATA INSERTION FOR VALID USER.	08-09-2023	48	
+18      HIT COUNT
+
+P-1
+CREATE A SIMPLE CALCULATOR APPLICATION USING SERVLET.
+HTML CODE: index.html
+<html>
+    <head>
+        <title>Calculator</title>
+    </head>
+    <body align="justify">
+<form action="Calculate" >
+ Enter First Number <input type="text" name="tn1" ><br>
+ Enter Second Number <input type="text" name="tn2" ><br>
+ Select an Operation<br>
+ <input type="radio" name="opr" value="+">ADDITION<br>
+ <input type="radio" name="opr" value="-">SUBTRACTION<br>
+ <input type="radio" name="opr" value="*">MULTIPLY<br>
+<input type="radio" name="opr" value="/">DIVIDE <br>
+<input type="reset"><br>
+<input type="submit" value="Calculate" >
+</form>
+    </body>
+</html>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+SERVLET CODE:  Calculate.java
+
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+public class Calculate extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<html><head><title>Calculator</title></head><center><body>");
+            double n1 = Double.parseDouble(request.getParameter("tn1"));
+            double n2 = Double.parseDouble(request.getParameter("tn2"));
+            double result = 0;
+            String opr = request.getParameter("opr");
+            if(opr.equals("+"))
+                result = n1 + n2;
+            if(opr.equals("-"))
+                result = n1 - n2;
+            if(opr.equals("*"))
+                result = n1 * n2;
+            if(opr.equals("/"))
+                result = n1 / n2;
+            out.println("<h1 aligh=centerf> Answer "+result);
+            out.println("</center></body></html>");     
+        }
+    }}
+OUTPUT:
+
+
+
+P-2
+AIM: CREATE A SERVLET FOR A LOGIN PAGE. IF THE USERNAME AND PASSWORD ARE CORRECT THEN IT SAYS MESSAGE “HELLO <USERNAME>” ELSE A MESSAGE “LOGIN FAILED”.
+HTML CODE: index.html
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body align="justify">
+        <form action="Login">
+            Enter the username <input type ="text" name="tuname"><br>
+            Enter the Password<input type="Password" name="tpass"><br>
+            <input type="Submit" value ="Login">
+        </form>
+    </body>
+</html>
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+SERVLET CODE:  Login.java
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+public class Login extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+           String tuname = request.getParameter("tuname");
+           String tpass = request.getParameter("tpass");
+            if(tuname.equals("admin") && (tpass.equals("password")))
+                out.println("<h1> Login Successful</h1>");
+            else
+                out.println("<h1> Login Failed</h1>");           
+        }
+    }
+}
+
+ OUTPUT 1:  Attempt with wrong password
+
+
+
+
+------------------------------------------------------------------------------ OUTPUT 2: Attempt with correct password	
+
+P-3
+AIM: TO FIND OF NUMBER OF TIMES USER VISITED PAGE USING COOKIES.
+
+
+HTML CODE: index.html
+<html> <head>
+<title>Login Form</title> <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head> 
+
+<body>
+    <form action="Cookie" ><fieldset><legend> Cookies count</legend>
+<center><h1>Login Cookie For Demo</h1></center>
+Enter User ID <input type="text" name="txtId"><br><br>
+Enter Password<input type="password" name="txtPass"><br><br> <input type="reset">
+<input type="submit" value=" click to Login " > 
+</fieldset></form>
+</body>
+</html>
+------------------------------------------------------------------------------
+SERVLET CODE: Cookie.java
+package mypack;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class Cookie extends HttpServlet
+{
+static int i=1;
+
+public void doGet (HttpServletRequest request, HttpServletResponse response)
+throws IOException, ServletException
+{
+response.setContentType ("text/html");
+PrintWriter out = response.getWriter();
+String k=String.valueOf(i);
+javax.servlet.http.Cookie c = new javax.servlet.http.Cookie ("visit", k);
+response.addCookie(c) ;
+int j=Integer.parseInt (c.getValue ()) ;
+if (j==1)
+out.println("<h1>Welcome</h1<");
+
+
+
+
+
+
+else
+out.println("<h3>Ooh Shit Your are again</h3›<br>");
+out.println("You visited "+i+" times");
+i++;}}
+OUTPUT:
+New Login:
+Relogin: 
+P-4
+
+AIM: DISPLAY IMPLICIT OBJECTS BY JSP.
+JSP CODE: 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Use of Intrinsic object in JSP</h1>
+        <h1>Request Object</h1>
+        Query String <%=request.getQueryString() %><br>
+        Context Path <%=request.getContextPath() %><br>
+        Remote Host <%=request.getRemoteHost() %><br>
+        <h1>Response Object</h1>
+        Character Encoding Type <%=request.getCharacterEncoding() %><br>
+        Content Type <%=request.getContentType() %><br>
+        Locale <%=request.getLocale() %><br>
+
+        <h1>Session Object </h1>
+        ID <%=session.getId() %><br>
+        Creation Time <%= new java.util.Date(session.getCreationTime()) %> <br>
+        Last Access Time <%= new java.util.Date(session.getLastAccessedTime()) %>
+---------------------------------------------------------------------------------------------
+chatgpt---
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Implicit Objects Example</title>
+</head>
+<body>
+
+<h1>Implicit Objects Example</h1>
+
+<%
+    // Getting values from implicit objects
+    String requestValue = (String) request.getAttribute("attributeName");
+    String sessionValue = (String) session.getAttribute("attributeName");
+    String applicationValue = (String) application.getAttribute("attributeName");
+    String paramValue = request.getParameter("paramName");
+    String outValue = "Hello from implicit out object!";
+
+    // Setting values to implicit objects
+    request.setAttribute("attributeName", "Value from Request");
+    session.setAttribute("attributeName", "Value from Session");
+    application.setAttribute("attributeName", "Value from Application");
+%>
+
+<p>Value from Request: <%= requestValue %></p>
+<p>Value from Session: <%= sessionValue %></p>
+<p>Value from Application: <%= applicationValue %></p>
+<p>Value from Parameter: <%= paramValue %></p>
+<p>Value from Out Object: <%= outValue %></p>
+
+</body>
+</html>
+¬¬¬¬¬¬¬¬¬------------------------------------------------------------------------------
+
+
+
+
+
+OUTPUT:
+
+
+P-5
+AIM: CREATE AN HTML PAGE WITH FIELDS, ENO, NAME, AGE,  SALARY. NOW ON SUBMIT THIS DATA TO A JSP PAGE WHICH WILL UPDATE THE EMPLOYEE TABLE OF DATABASE WITH MATCHING ENO.
+SQL COMMAND CREATE TABLE
+--CREATE TABLE EMP(cus_id int(10), cus_name varchar(30), cus_age int(3), cus_salary int(10));
+-- insert into emp values(1, 'user1', 33, 12323);
+HTML CODE: index.html
+<html>
+    <head>
+        <title>Update user data in sql table</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="Updatedata.jsp">
+            <center>
+            Enter the Employee number<input type='text' name ='tid'>
+            <br>
+            Enter Name of Employee<input type='text' name='tname'>
+            <br>
+            Enter Salary<input type='text' name ='salary'>
+            <br>
+            Enter age <input type="text" name ="age">
+            <input type ="reset">
+            <input type = "submit">
+            </center>
+        </form>
+    </body>
+</html>
+¬¬¬¬¬¬¬¬¬----------------------------------------------------------------------------
+
+JSP CODE: Updatedata.jsp
+
+<%@page contentType="text/html" import="java.sql.*" %>
+<html><body>
+<h1>Employee Record Update</h1>
+<%
+ String cus_id=request.getParameter("tid"); 
+ String cus_name=request.getParameter("tname");
+ String cus_age = request.getParameter("age");
+ String cus_salary = request.getParameter("salary");
+
+ try{
+
+ Class.forName("com.mysql.jdbc.Driver");
+ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/temp","root","root");
+ PreparedStatement stmt = con.prepareStatement("select * from emp where cus_id=?");
+ stmt.setString(1, cus_id); 
+ ResultSet rs = stmt.executeQuery();
+ if(rs.next()){
+ out.println("<h1>~~~ Employee " +cus_name+" Exist ~~~ </h1>");
+  PreparedStatement pst1= con.prepareStatement("update emp set cus_salary=? where cus_id=?");
+ PreparedStatement pst2= con.prepareStatement("update emp set cus_age=? where cus_id=?");
+
+ pst1.setString(1, cus_salary); 
+ pst1.setString(2, cus_id);
+ pst2.setString(1, cus_age); 
+ pst2.setString(2, cus_id);
+
+
+pst1.executeUpdate();
+ pst2.executeUpdate();
+ }
+else{
+ out.println("<h1 align= center>Employee Record not exist !!!!!</h1>");
+ }
+ }catch(Exception e){out.println(e);}
+ %></body></html>
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+ PreparedStatement pst1= con.prepareStatement("delete from emp where cus_id =?" );//to delete data  18:50 14-12-2023;
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+OUTPUT:
+Mysql table before update.
+mysql> select * from emp;
+
+
+
++----------+--------------+-------------+---------------+
+| cus_id | cus_name | cus_age | cus_salary |
++----------+--------------+-------------+---------------+
+|      1     | employ1  |      21        |      13000   |
+|      2     | employ2  |      20        |      20000   |
+|      3     | employ3  |      30        |     300000  |
++----------+--------------+-------------+---------------+
+
+Insert data to update on page
+
+
+mysql table after submitting
+
++--------+----------+---------+------------+
+| cus_id | cus_name | cus_age | cus_salary |
++--------+----------+---------+------------+
+|      1 | employ1  |      21 |      13000 |
+|      2 | employ2  |      20 |      20000 |
+|      3 | employ3  |      33 |      35000 |
++--------+----------+---------+------------+
+
+P-6
+CREATE A CURRENCY CONVERTER APPLICATION USING EJB.
+HTML CODE: index.html
+
+<html>
+    <head>
+        <title>Currency Converter</title>
+    </head>
+<body>
+    <form action="convert" ><fieldset><legend> Currency Convertor</legend>
+    Enter INR to convert: <br>
+    <input type="text" name="amount"><br>
+Select Conversion Type<br>
+<input type="radio" name="type" value="r2d" checked>Rupees to Dollar><br>
+<input type="radio" name="type" value="d2r" >Dollar to Rupees<br>
+<input type="reset" ><input type="submit" value="CONVERT" >
+        </fieldset> </form> </body> </html>
+-----------------------------------------------------------------------------
+SERVLET CODE: convert.java
+package mypack;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.ejb.EJB;
+import mybeans.ccbeans;
+public class convert extends HttpServlet {
+ @EJB ccbeans obj;
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+ throws ServletException, IOException {
+ response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+double amount = Double.parseDouble(request.getParameter("amount"));
+if(request.getParameter("type").equals("r2d"))
+{
+out.println("<h1>"+amount+ " Rupees = "+obj.r2Dollor(amount)+" Dollors</h1>");
+}
+if(request.getParameter("type").equals("d2r"))
+{
+out.println("<h1>"+amount+ " Dollors = "+obj.d2Rupees(amount)+" Rupees</h1>");
+}
+}}
+BEAN CODE: ccbeans.java
+
+package mybeans;
+import javax.ejb.Stateless;
+@Stateless
+public class ccbeans {
+public ccbeans(){}
+public double r2Dollor(double r){ return r/82.04; }
+public double d2Rupees(double d) {return d*82.04;}
+}
+-----------------------------------------------------------------------------
+
+OUTPUT:
+
+
+
+
+P-7
+AIM : VALIDATE USING JSP
+HTML CODE: index.html
+<html>
+    <head>
+        <title>validate user by jsp</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body><form action="Validate" method="Post"> <fieldset><legend>Login Page</legend>
+                Enter Username <br><input type="text" name='uname'>    <br>
+                Enter Password <br><input type='password' name='pass'> <br>        
+                <input type="submit" value="Login">
+            </fieldset>
+        </form>
+    </body>
+</html>
+-----------------------------------------------------------------------------
+JSP CODE: Validate.java
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class Validate extends HttpServlet {
+  public void doPost(HttpServletRequest req, HttpServletResponse res)
+      throws IOException, ServletException {
+    res.setContentType("text/html");
+    PrintWriter out = res.getWriter();
+    String username = req.getParameter("uname");
+    String password = req.getParameter("pass");
+    if (password.equals("Servlet")) {
+      req.setAttribute("username", username);
+      req.setAttribute("password", password);
+      RequestDispatcher rd = req.getRequestDispatcher("/Welcome");
+      rd.forward(req, res);
+    }
+    else {
+      out.print("Incorrect password");
+      RequestDispatcher rd = req.getRequestDispatcher("/index.html");
+      rd.include(req, res);
+    }
+  }}
+-----------------------------------------------------------------------------
+JSP CODE: Welcome.java
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class Welcome extends HttpServlet {
+  public void doPost(HttpServletRequest req, HttpServletResponse res)
+      throws ServletException, IOException {
+    res.setContentType("text/html");
+    try (PrintWriter out = res.getWriter()) {
+      String username = (String) req.getAttribute("username");
+      String s2password = (String) req.getAttribute("s2password");
+      out.println("<h1>Welcome " + username + "</h1>");
+    }
+  }
+} 
+
+OUTPUT: FIRST ATTEMPT WITH WRONG PASSWORD
+OUTPUT : SECOND ATTEMPT WITH RIGHT PASSWORD 
+P-8
+AIM: WORKING WITH JSTL
+HTML CODE: index.html
+<html>
+    <head>
+        <title>JSTL</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="workjsp.jsp" method="get"><fieldset>
+                <legend> work with JSTL</legend>
+                firstname:<br><input type="text" name="fname"><br>
+                lastname:<br><input type="text" name="lname"><br>
+                <input type="submit" value="Click to submit">
+            </fieldset>
+        </form>
+    </body>
+</html>
+-----------------------------------------------------------------------------
+JSP CODE:
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Welcome ${param.fname} ${param.lname}</h1><br>
+        <h2>Hello Professional JSP (JAVA SERVER PAGE FOUNDED BY <i>MACHEAL A. JACKSON</i>)</h2><br>
+        <h1>get sum maths here</h1><br>
+        <p>is 5 less than 10? ${5<10}<br>
+           8*5=${8*5}<br> </p>   
+    </body>
+</html>
+
+----------------------------------------------------------------------------- 
+OUTPUT: 
+P-9
+AIM:  CREATE A REGISTRATION SERVLET IN JAVA USING JDBC. ACCEPT THE DETAILS SUCH AS USERNAME, PASSWORD, EMAIL, AND COUNTRY FROM THE USER USING HTML FORM AND STORE THE REGISTRATION DETAILS IN THE DATABASE.VIEW DB.
+SQL QUERY :
+Step1: Create Table name userdata;
+Mysql query:
+mysql> create database temp;
+Query OK, 1 row affected (0.00 sec)
+mysql> \u temp;
+Database changed
+mysql> create table userdata( duname char(30), dpassword varchar(30), demail varchar(20), dcountry char(20));
+-----------------------------------------------------------------------------
+HTML CODE: index.html
+<html>
+        <title>Registration page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="Registration" method="Post"><fieldset>    
+            <legend>Registration page:</legend>
+             Enter Username <br>     <input type="text" name="uname"><br>
+            Enter password   <br>     <input type ="password" name="pass"> <br>
+            Enter Your Email <br>     <input type="email" name="mail"> <br>
+            Enter Your Country <br>    <input type ="text" name ="country"><br>
+            <input type="submit" value="Register">
+            <a href="showdb">show Inserted DATA</a>
+            </fieldset>      </form> 	</body>	</html>
+-----------------------------------------------------------------------------
+
+SERVLET CODE: Registeration.java
+
+package mypack;
+import java.sql.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+
+
+public class Registration extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+         Connection con=null;
+            PreparedStatement ps = null;
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+            String duname=request.getParameter("uname");
+            String dpassword=request.getParameter("pass");
+            String demail=request.getParameter("mail");
+            String dcountry=request.getParameter("country");
+
+        response.setContentType("text/html;charset=UTF-8");
+     try
+ { Class.forName("com.mysql.jdbc.Driver");
+ con=DriverManager.getConnection("jdbc:mysql://localhost:3306/temp","root","root");
+ out.println("connection done successfully...");
+ ps=con.prepareStatement("insert into userdata values (?,?,?,?)");
+ ps.setString(1,duname);
+ ps.setString(2,dpassword);
+ ps.setString(3,demail);
+ ps.setString(4,dcountry);
+ ps.execute();
+ out.print("Registered  successfully!!!!");
+ }
+ catch(Exception e) { }
+
+ }
+}
+-----------------------------------------------------------------------------
+
+
+
+SERVLET CODE: showdb.java
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/showdb")
+public class showdb extends HttpServlet {
+
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Set the content type of the response to HTML
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+            Connection con =  null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/temp","root","root");
+
+            // SQL query to fetch data
+            String sql = "SELECT * FROM userdata";
+            // Execute the query
+            try (PreparedStatement statement = con.prepareStatement(sql)) {
+                // Execute the query
+                ResultSet resultSet = statement.executeQuery();
+
+                // Create an HTML table to display the data
+                out.println("<html><body>");
+                out.println("<h1>User Data</h1>");
+                out.println("<table border='1'>");
+                out.println("<tr><th>Name</th><th>Password</th><th>Email</th><th>Country</th></tr>");
+
+                // Process the result set
+                while (resultSet.next()) {
+                    // Get data from the current row in the result set
+
+                    String dname = resultSet.getString("duname");
+                    String dpassword = resultSet.getString("dpassword");
+                    String demail = resultSet.getString("demail");
+                    String dcountry = resultSet.getString("dcountry");
+
+                    // Print the data as a row in the HTML table
+                    out.println("<tr>");
+
+                    out.println("<td>" + dname + "</td>");
+                    out.println("<td>" + dpassword + "</td>");
+                    out.println("<td>" + demail + "</td>");
+                    out.println("<td>" + dcountry + "</td>");
+                    out.println("</tr>");
+                }
+
+                out.println("</table>");
+                out.println("</body></html>");
+
+                // Close resources
+                resultSet.close();
+            }
+            con.close();
+        } catch (SQLException e) {
+            out.println("Error fetching data: " + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(showdb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
+-----------------------------------------------------------------------------
+
+
+
+OUTPUT:
+
+
+
+
+P-10
+AIM: WELCOME USER USING REQUEST DISPATCHER
+HTML CODE: index.html
+<html>
+    <head>
+        <title>Request dispatcher</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body><form action="Validate" method="Post"> <fieldset><legend>Login Page</legend>
+                Enter Username <br><input type="text" name='uname'>    <br>
+                Enter Password <br><input type='password' name='pass'> <br>
+                <input type="submit" value="Login">
+            </fieldset>
+        </form>
+    </body>
+</html>
+-----------------------------------------------------------------------------
+SERVLET CODE: Welcome.java
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class Welcome extends HttpServlet
+{ 
+ public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, 
+IOException
+{
+ res.setContentType("text/html");
+ try (PrintWriter out = res.getWriter()) { 
+ String username = (String)req.getAttribute("username"); 
+ String s2password = (String)req.getAttribute("s2password"); 
+ out.println("<h1> Welcome "+username + "</h1>");
+ out.println("<strong> RequestDispatcher is an interface in Java Servlet API that provides the facility of dispatching the request to another resource it may be html, servlet or jsp</strong>");       
+ }
+}
+}
+
+SERVLET CODE: Validate.java
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class Validate extends HttpServlet 
+{ public void doPost(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException
+ { 
+res.setContentType("text/html");
+PrintWriter out=res.getWriter(); 
+String username=req.getParameter("uname");
+String password=req.getParameter("pass");
+
+if(password.equals("Servlet"))
+ {
+ req.setAttribute("username",username);
+ req.setAttribute("password",password); 
+ RequestDispatcher rd= req.getRequestDispatcher("/Welcome");
+ rd.forward(req, res);
+ }
+ else
+ { 
+ out.print("Incorrect password");
+ RequestDispatcher rd= req.getRequestDispatcher("/index.html");
+ rd.include(req, res);
+ }
+ }
+}
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+OUTPUT : FIRST ATTEMP WITH WRONG PASSWORD
+
+OUTPUT : SECOND ATTEMP WITH CORRECT  PASSWORD 
+P-11
+AIM: ROOM BOOKING 
+SQL QUERY: CREATE TABLE
+mysql> CREATE TABLE rmbook( roomid int (10), roomtype char (20), Charges int (10), customer char (20), cContact int (10), Status char (10));
+ADD DATA
+INSERT INTO rmbook(roomid,roomtype,charges) VALUES (101,"SuperDulex",7000), (102,"SuperDulex",7000), (201,"Suit",9000),(202,"Suit",9000), (301,"Dulex",6000), (302,"Dulex",6000);
+CHANGE STATUS TO NOT BOOKED
+mysql> UPDATE rmbook SET status = "NOT BOOKED" WHERE status IS NULL;
+------------------------------------------------------------------------------
+HTML CODE: index.html
+<form action="RBServlet" >
+ Select a room Type
+<input type="radio" name="txtType" value="Dulex">Dulex
+<input type="radio" name="txtType" value="SuperDulex">Super Dulex
+<input type="radio" name="txtType" value="Suit">Suit<br>
+ Enter Your Name<input type="text" name="txtCust" ><br>
+ Enter Mobile No.<input type="text" name="txtMob" ><br>
+<input type="reset" ><input type="submit" value="Book Room">
+</form>
+-----------------------------------------------------------------------------
+SERVLET CODE: RBServlet.java 
+package mypack;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.ejb.EJB;
+import mybeans.RRBean;
+
+public class RBServlet extends HttpServlet {
+
+    @EJB
+    RRBean obj;
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        String rt = request.getParameter("txtType");
+        String cn = request.getParameter("txtCust");
+        String cm = request.getParameter("txtMob");
+        String msg = obj.romBook(rt, cn, cm);
+        out.println(msg);
+    }
+}
+-----------------------------------------------------------------------------
+SESSIONBEANS CODE: RRBean.java
+package mybeans;
+import javax.ejb.Stateless;
+import java.sql.*;
+@Stateless
+public class RRBean {
+    public RRBean() {
+    }
+    public String romBook(String rt, String cn, String cm) {
+        String msg = "";
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/temp", "root", "root");
+            String query = "select * from rmbook where RoomType=? and status='Not Booked'";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, rt);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String rno = rs.getString(1);
+                PreparedStatement stm1 = con.prepareStatement("update rmbook set customer=? where RoomId=? ");
+                PreparedStatement stm2 = con.prepareStatement("update rmbook set ccontact=? where RoomId=? ");
+                PreparedStatement stm3 = con.prepareStatement("update rmbook set status=? where RoomId=? ");
+                stm1.setString(1, cn);
+                stm1.setString(2, rno);
+                stm2.setString(1, cm);
+                stm2.setString(2, rno);
+                stm3.setString(1, "Booked");
+                stm3.setString(2, rno);
+                stm1.executeUpdate();
+                stm2.executeUpdate();
+                stm3.executeUpdate();
+                msg = "<h1> Room " + rno + " Booked  " + "Charges = " + rs.getString(3) + "<h1>";
+            } else {
+                msg = "<h1>Room " + rt + " currently Not available<h1>";
+            }
+        } catch (Exception e) {
+            msg = "" + e;
+        }
+        return msg;
+    }
+}
+-----------------------------------------------------------------------------
+OUTPUT: 
+P-12
+
+AIM: CREATE A REGISTRATION AND LOGIN JSP APPLICATION TO REGISTER AND AUTHENTICATE THE USER BASED ON USERNAME AND PASSWORD USING JDBC. 
+SQL QUERY : create table
+CREATE TABLE USER (USERNAME VARCHAR (100), PASSWORD VARCHAR (100), PASSWORD1 VARCHAR (100), EMAIL VARCHAR (100), COUNTRY VARCHAR (100));
+-----------------------------------------------------------------------------
+HTML CODE : index.html
+<html>
+    <title>Registration page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <form action="registerjsp.jsp" method="Post"><fieldset>    
+            <legend>Registration page:</legend>
+            Enter Username     <br>  <input type="text" name="uname"><br>
+            Enter password     <br>  <input type ="password" name="pass"> <br>
+            Enter password     <br>  <input type ="password" name="pass1"> <br>
+            Enter Your Email   <br>  <input type="email" name="mail"> <br>
+            Enter Your Country <br>  <input type ="text" name ="country"><br>
+            <input type="submit" value="Register">
+        </fieldset>
+      </form>
+ 	</body>
+	</html>
+------------------------------------------------------------------------------
+JSP CODE: registerjsp.jsp
+
+<%@page contentType="text/html" import="java.sql.*"%>
+<html><body>
+        <h1>Registration JSP Page</h1>
+        <%
+            String uname = request.getParameter("uname");
+            String password = request.getParameter("pass");
+            String password1 = request.getParameter("pass1");
+            String email = request.getParameter("mail");
+            String country = request.getParameter("country");
+            if (password.equals(password1)) {
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/temp", "root", "root");
+                    PreparedStatement stmt = con.prepareStatement("insert into user values (?,?,?,?)");
+                    stmt.setString(1, uname);
+                    stmt.setString(2, password);
+                    stmt.setString(3, email);
+                    stmt.setString(4, country);
+                    int row = stmt.executeUpdate();
+                    if (row == 1) {
+                        out.println("Registration Successful");
+                    } else {
+                        out.println("Registration FFFFFAAAIIILLLL !!!!");
+        %><jsp:include page="index.html" ></jsp:include>
+        <%
+                }
+            } catch (Exception e) {
+                out.println(e);
+            }
+        } else {
+            out.println("<h1>Password Mismatch</h1>");
+        %>
+        <jsp:include page="index.html" ></jsp:include>
+        <% }
+        %>
+    </body></html>
+-----------------------------------------------------------------------------
+OUTPUT:1 
+
+
+  OUTPUT:
+SELECT * FROM User;
++----------+----------+-------------------+---------+
+| Username | password | email             | country |
++----------+----------+-------------------+---------+
+| Micheal  | 1234     | micheal@gmail.com | India   |
++----------+----------+-------------------+---------+ 
+
+P-13
+AIM: UPLOAD FILE.
+HTML CODE: index.html
+<html>
+ <body>
+     <FORM ACTION="FILEUPLOADSERVLET" METHOD="POST" ENCTYPE="MULTIPART/FORM-DATA">
+      Select File to Upload:<input type="file" name="file" id="file">
+      <br>
+      Destination <input type="text" value name="destination" placeholder="Give the path where to upload">
+ <input type="submit" value="Upload file" name="upload" id="upload">
+ </form>
+ </body>
+</html>
+-----------------------------------------------------------------------------
+SERVLET CODE: FileUpload.java
+package fileservletapp;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.*;
+@MultipartConfig
+public class FileUpload extends HttpServlet {
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException,
+            IOException {
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        String path = req.getParameter("destination");
+        Part filePart = req.getPart("file");
+        String filename = filePart.getSubmittedFileName();
+        out.print("<br><br><hr> file name: " + filename);
+        OutputStream os = null;
+        InputStream is = null;
+        try {
+            os = new FileOutputStream(new File(path + File.separator + filename));
+            is = filePart.getInputStream();
+            int read = 0;
+            while ((read = is.read()) != -1) {
+                os.write(read);
+            }
+            out.println("<br>file uploaded sucessfully...!!!");
+        } catch (FileNotFoundException e) {
+            out.print(e);
+        }
+    }
+}
+-----------------------------------------------------------------------------
+OUTPUT:
+
+ imager_1.7.5.exe  select to upload
+
+file location : in my case ‘E:\Download’
+
+
+
+
+imager_1.7.5.exe file uploaded  
+P-14
+AIM: FILE DOWNLOAD WEBAPP
+NOTE: PUT DOWNLOAD FILE IN THIS FOLDER BEFORE RUNNING THE PROGRAM.
+
+HTML CODE: index.html
+<html>
+    <head>
+        <title>File Download Page</title>
+    </head>
+    <body>
+        <h1>File Download Application</h1>
+        Click <a href="DownloadServlet?filename=temp.pdf">BOOK</a>
+        <br/><br/>
+        Click <a href="DownloadServlet?filename=index.html">HTML page</a>
+    </body>
+</html>
+-----------------------------------------------------------------------------
+SERVLET CODE: DownloadServlet.java
+package filedownloadapp;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DownloadServlet extends HttpServlet {
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("APPLICATION/OCTET-STREAM");
+        String filename = request.getParameter("filename");
+        ServletContext context = getServletContext();
+        PrintWriter out;
+        //ServletOutputStream out = response.getOutputStream(); // any of the two works
+        try (InputStream is = context.getResourceAsStream("/" + filename)) {
+            //ServletOutputStream out = response.getOutputStream(); // any of the two works
+            out = response.getWriter();
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\""); // 
+//if comment this statement then it wl ask you about the editor with which you want to open the file
+            int i;
+            while ((i = is.read()) != -1) {
+                out.write(i);
+            }
+        }
+        out.close();
+    }
+}
+-----------------------------------------------------------------------------
+OUTPUT:
+
+
+
+P-15
+AIM: DEVELOP SIMPLE SERVLET QUESTION ANSWER APPLICATION USING DATABASE.
+SQL QUERY : create table
+CREATE TABLE questions (
+         qno varchar(5) PRIMARY KEY,question VARCHAR(255),op1 VARCHAR(255),op2 VARCHAR(255), op3 VARCHAR(255),    op4 VARCHAR(255),  ans VARCHAR(255))
+SQL QUERY : insert data
+INSERT INTO questions (qno, question, op1, op2, op3,op4,ans)
+VALUES
+    ('001','What is the capital of France?', 'Paris', 'London', 'Berlin','India', 'Paris'),
+    ('002','Which planet is known as the Red Planet?', 'Earth', 'Mars', 'Venus','Jupiter','Mars'),
+    ('003','How many continents are there on Earth?', '5', '6', '7','2', '7'),
+    ('004','What is the largest mammal in the world?', 'Elephant','Giraffe','Blue Whale','Kangaroo','Blue Whale');
+-----------------------------------------------------------------------------
+HTML CODE: index.html
+<html> 
+<head> 
+<title>Quiz Application</title> 
+</head> 
+<body> 
+<h1>Welcome to Quiz Servlet </h1> 
+<h1><a href="NewServlet" >CLICK TO START QUIZ</a></h1> 
+</body> 
+</html> 
+-----------------------------------------------------------------------------
+SERVLET CODE: NewServlet.java
+
+import java.io.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class NewServlet extends HttpServlet {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<form action='showresult' method='post'>"); // Specify the correct servlet name
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/qadb", "root", "hr");
+            Statement stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery("select * from questions");
+            out.println("<table border='1'>");
+            int qno = 0;
+            while (res.next()) {
+                qno++;
+                out.println("<tr><td>" + res.getString(1) + "</td>");
+                out.println("<td>" + res.getString(2) + "</td></tr>");
+                out.println("<tr><td><input type='radio' name='q" + qno + "' value='" + res.getString(3) + "'>" + res.getString(3) + "</td></tr>");
+                out.println("<tr><td><input type='radio' name='q" + qno + "' value='" + res.getString(4) + "'>" + res.getString(4) + "</td></tr>");
+                out.println("<tr><td><input type='radio' name='q" + qno + "' value='" + res.getString(5) + "'>" + res.getString(5) + "</td></tr>");
+                out.println("<tr><td><input type='radio' name='q" + qno + "' value='" + res.getString(6) + "'>" + res.getString(6) + "</td></tr>");
+            }
+        } catch (Exception e) {
+            out.println(e);
+        }
+        out.println("</table>");
+        out.println("<input type='reset'>");
+        out.println("<input type='submit' value='SUBMIT'>");
+        out.println("</form>");
+    }
+}
+-----------------------------------------------------------------------------
+SERVLET CODE: showresult.java
+
+import java.io.*;
+import java.util.Enumeration;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class showresult extends HttpServlet {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        // Retrieve the user's submitted answers
+        Enumeration<String> parameterNames = request.getParameterNames();
+        int score = 0;
+
+        out.println("<h1>Quiz Result</h1>");
+        out.println("<table border='1'><tr><th>Question</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th></tr>");
+
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String[] paramValues = request.getParameterValues(paramName);
+
+            // Check if the parameter represents a question and its value is correct
+            if (paramName.startsWith("q") && paramValues.length > 0) {
+                String correctAnswer = getCorrectAnswer(paramName); // The correct answer
+                String userAnswer = paramValues[0];
+
+                // Compare the user's selected answer with the correct answer
+                boolean isCorrect = correctAnswer != null && correctAnswer.equals(userAnswer);
+
+                // Display the question, user's answer, correct answer, and result
+                out.println("<tr><td>" + paramName + "</td>");
+                out.println("<td>" + userAnswer + "</td>");
+                out.println("<td>" + correctAnswer + "</td>");
+                if (isCorrect) {
+                    out.println("<td><span style='color:green;'>Correct</span></td></tr>");
+                    score++;
+                } else {
+                    out.println("<td><span style='color:red;'>Incorrect</span></td></tr>");
+                }
+            }
+        }
+
+        out.println("</table>");
+        out.println("<h2>Your Score: " + score + " out of " + getNumberOfQuestions() + "</h2>");
+    }
+
+    private String getCorrectAnswer(String paramName) {
+        if (paramName.equals("q1")) {
+            return "Paris";
+        } else if (paramName.equals("q2")) {
+            return "Mars";
+        } else if (paramName.equals("q3")) {
+            return "7";
+        } else if (paramName.equals("q4")) {
+            return "Blue Whale";
+        } else {
+            return null;
+        }
+    }
+
+    // You should implement this method to return the total number of questions
+    private int getNumberOfQuestions() {
+        // Implement logic to determine the total number of questions
+        return 4; 
+    }
+}
+
+-----------------------------------------------------------------------------
+OUTPUT:
+
+
+
+
+
+
+P-16
+AIM: EXPRESSION LANGUAGE JSP
+
+HTML CODE: index.html
+<html>
+    <head>
+        <title>to view jsp page using anchor tag</title>          
+    </head>
+    <body>
+        <a href="switchcase.jsp"> OPEN JSP PAGE</a>
+    </body>
+</html>
+-----------------------------------------------------------------------------
+JSP CODE.: switchcase.jsp
+<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<html>
+    <head>
+        <title>Expression language by JSP</title>
+    </head>
+    <body>
+        <%! int week = 6; %>
+        <% switch (week){
+            case 1:
+                out.println("MONDAY");
+                break;
+            case 2:
+                out.println("TUESDAY");
+                break;
+            case 3:
+                out.println("WEDNESDAY");
+                break;
+            case 4:
+                out.println("THURSDAY");
+                break;
+            case 5:
+                out.println("FRIDAY");
+                break;
+            case 6:
+                out.println("SATRURDAY");
+                break;
+            case 7:
+                out.println("SUnDAY");
+                break;
+            default:
+                out.println("EnTER The correct vaLUE");
+                  break;}
+         %>       
+    </body>
+</html>
+-----------------------------------------------------------------------------
+OUTPUT:
+¬¬¬¬¬¬¬¬
+
+P-17
+AIM: USE JDBC FOR DATA INSERTION FOR VALID USER.
+SQL QUERY : create table
+CREATE TABLE USER1 (NAME VARCHAR(10), EMAIL VARCHAR (100), COUNTRY CHAR (20));
+HTML CODE: index.html
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body><fieldset> <legend>  JDBC Data Insertion   </legend>
+        <form action="Validate1" method="Post">
+        USERNAME <br><input type="text" name="uname"><br>
+        PASSWORD <br><input type ="password" name="pass"><br>
+        <input type="submit" value="Login">
+        </form></fieldset>
+
+    </body>
+</html>
+-----------------------------------------------------------------------------
+Servlet Code: Validate1
+package mypack;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Validate1 extends HttpServlet {
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String tuname = request.getParameter("uname");
+            String tpass = request.getParameter("pass");
+            if (tuname.equals("a") && (tpass.equals("p"))) {
+                out.println("<a href=\"Register.html\"> <h1>Insert DATA</h1></a>");
+            } else {
+                out.println("<h1>Login Failed</h1>");
+            }
+        }
+    }
+}
+-----------------------------------------------------------------------------
+HTML CODE: Register.html
+<html>
+    <head>
+        <title>Registration page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="Registration" method="Post"><fieldset>
+            <Legend>Registration page:</legend>
+                Enter Username <br>
+            <input type="text" name="uname"><br>
+            Enter email<br>
+            <input type="email" name="mail"> <br>
+            Enter Your Country <br>
+            <input type ="text" name ="country"><br>
+            <input type="submit" value="Register">            
+            </fieldset>      </form>    
+    </body>
+</html>
+-----------------------------------------------------------------------------
+SERVLET CODE: Registation.java
+package mypack;
+
+import java.sql.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+public class Registration extends HttpServlet {
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        String duname = request.getParameter("uname");
+        String dpassword = request.getParameter("pass");
+        String demail = request.getParameter("mail");
+        String dcountry = request.getParameter("country");
+
+        response.setContentType("text/html;charset=UTF-8");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/temp", "root", "root");
+            out.println("connection done successfully...");
+            ps = con.prepareStatement("insert into user1 values (?,?,?)");
+            ps.setString(1, duname);
+            ps.setString(2, demail);
+            ps.setString(3, dcountry);
+            ps.execute();
+            out.print("Registered  successfully!!!!");
+        } catch (Exception e) {
+        }
+    }
+}
+
+
+
+
+OUTPUT
+AFTER SUCCESSFULL LOGIN ADMIN GET THE ACCESS OF DATA 
+¬¬ 
+
+
+SQL OUTPUT:
+mysql> select * from user1;
++----------+--------------------------+--------+
+| username |email                     | country|
++----------+--------------------------+--------+
+| user 1   | sehabipebu@jollyfree.com | India  |
++----------+--------------------------+--------+
+
+
+P-18 HIT COUNT
+HTML
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="HitCounterSevlet">
+            <input type="Submit" value="ser">
+        </form>
+        <div>TODO write content</div>
+    </body>
+</html>
+
+SERVLET
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mybean;
+
+import javax.ejb.EJB;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import mybean.HitCountBean;
+
+//@WebServlet("/HitCounterSevlet")
+public class HitCounterSevlet extends HttpServlet {
+    @EJB
+    private HitCountBean hitCounterBean;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        int count = hitCounterBean.incrementAndGetCount();
+
+        out.println("<html><body>");
+        out.println("<h2>Servlet Hit Count</h2>");
+        out.println("<p>This page has been visited " + count + " times.</p>");
+        out.println("</body></html>");
+    }
+}
+
+JBEAN
+package mybean;
+
+import javax.ejb.Singleton;
+
+@Singleton
+public class HitCountBean {
+    private int count = 0;
+
+    public int incrementAndGetCount() {
+        return ++count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+}
+
